@@ -29,14 +29,17 @@ Che:
   - Should not save user without password
   - Should save valid user
   - Valid user's attributes should all exist
-
-# TO DO: (in general order)
-
+ 
 ### User Controller
 - UsersController file
   - Action for registering a new user
 - Entry in the routes.rb file for the new controller action
 - Tests
+  - Registers valid user
+  - Does not register user with a short password
+  - Does not register user without username
+
+# TO DO: (in general order)
 
 ### Message Model
 - ActiveRecord model file
