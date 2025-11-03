@@ -14,3 +14,8 @@ bundle install
 rails db:create
 rails server -b 0.0.0.0 -p 3000
 exit
+rails generate active_record:session_migration
+cd help_desk_backend
+rails generate active_record:session_migration
+rails db:migrate
+exit
