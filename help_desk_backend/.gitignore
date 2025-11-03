@@ -16,6 +16,9 @@
 !/log/.keep
 !/tmp/.keep
 
+# Ignore bash history
+.bash_history
+
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
 !/tmp/pids/
