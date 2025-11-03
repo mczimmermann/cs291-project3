@@ -6,7 +6,7 @@ class UsersController < ApplicationController
     @user.last_active_at = Time.current
 
     if @user.save
-      token = JwtService.encode(user_id: @user.id)
+      token = JwtService.encode(@user)
       render json: {
         user: {
           id: @user.id,
