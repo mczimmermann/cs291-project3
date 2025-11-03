@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_03_202127) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_03_210609) do
+  create_table "expert_assignments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.datetime "assigned_at"
+    t.bigint "conversation_id"
+    t.datetime "created_at", null: false
+    t.bigint "expert_id"
+    t.datetime "resolved_at"
+    t.string "status"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "expert_profiles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "bio"
     t.datetime "created_at", null: false

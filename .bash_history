@@ -103,3 +103,22 @@ rails test
 rails test
 rails test
 exit
+cd help_desk_backend
+rails test
+rails generate model ExpertAssignment conversation_id:bigint expert_id:bigint status:string assigned_at:datetime resolved_at:datetime
+rails db:migrate
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+exit
