@@ -49,3 +49,7 @@ rails test
 rails test
 rails test
 exit
+rails test
+cd help_desk_backend/
+rails test
+exit

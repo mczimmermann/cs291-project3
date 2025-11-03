@@ -45,4 +45,25 @@ class UserTest < ActiveSupport::TestCase
     assert_not_nil user.updated_at, "updated_at should not be null"
   end
 
+  test "should not save two users with the same username" do
+    
+    user1 = User.create(
+      username: "KateLarrick",
+      password: "password123",
+      password_confirmation: "password123",
+      last_active_at: Time.current
+    )
+
+    assert user1.persisted?, "User 1 (valid) was not saved"
+
+    user2 = User.create(
+      username: "KateLarrick",
+      password: "password123",
+      password_confirmation: "password123",
+      last_active_at: Time.current
+    )
+
+    assert_not user2.save, "invalid user (duplicate username) was saved"
+  end
+
 end
