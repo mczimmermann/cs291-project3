@@ -96,3 +96,10 @@ rails test
 rails test
 rails test
 exit
+cd help_desk_backend
+rails generate model ExpertProfile user_id:bigint bio:text knowledge_base_links:json
+rails db:migrate
+rails test
+rails test
+rails test
+exit
