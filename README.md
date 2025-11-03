@@ -1,3 +1,21 @@
+# WORK ASSIGNMENTS:
+
+Katie:
+- User Model
+- User Controller
+- Expert Assignment Model
+- Expert Profile Model
+- Experts Controller
+- Health Controller
+
+Che:
+- Message Model
+- Messages Controller
+- Conversation Model
+- Conversations Controller
+- Updates Controller
+- Auth Controller
+
 # DONE:
 
 ### User Model
