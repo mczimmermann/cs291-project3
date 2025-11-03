@@ -32,6 +32,8 @@ gem "rack-cors" # For handling Cross-Origin Resource Sharing (CORS) requests fro
 
 gem "jwt" # For JSON Web Token authentication (if you choose JWT over sessions)
 
+gem 'bcrypt', '~> 3.1.18' # Added for password things
+
 gem "activerecord-session_store" # For database-backed session storage
 group :test do
    gem "mocha"
