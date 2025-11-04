@@ -125,3 +125,6 @@ exit
 cd help_desk_backend
 rails generate controller Experts queue claim unclaim show update history
 exit
+cd help_desk_backend
+rails test
+exit

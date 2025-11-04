@@ -22,4 +22,19 @@ class ExpertProfileTest < ActiveSupport::TestCase
     assert expert4.save, "valid expert profile did not save"
   end
 
+  # test for foreign key
+  test "expert profile must belong to a valid user" do
+
+    user = User.create!(username: "KateLarrick", email: "katelarrick@ucsb.edu", password: "password123")
+
+    # ExpertProfile with valid user_id should save
+    expert5 = ExpertProfile.new(user: user, bio: "Valid user")
+    assert expert5.save, "expert profile with valid user did not save"
+
+    # ExpertProfile with non-existent user_id should NOT save
+    expert_invalid = ExpertProfile.new(user_id: 42403, bio: "Invalid user")
+    assert_not expert_invalid.save, "expert profile with non-existent user_id was saved"
+    assert_includes expert_invalid.errors[:user], "must exist"
+  end
+
 end
