@@ -45,6 +45,15 @@ class ExpertsController < ApplicationController
     
     # update expert's conversation_id to the id of the conversation being claimed 
     conversation.update!(expert_id: @expert_profile.id, status: "active")
+
+    # make Expert Assignment object to store this assignment
+    ExpertAssignment.create!(
+      conversation: conversation,
+      expert: @expert_profile,
+      status: "active",
+      assigned_at: Time.current
+    )
+
     render json: { success: true }
 
   end
@@ -64,6 +73,14 @@ class ExpertsController < ApplicationController
 
     # remove the expert's id from the conversation and change status
     conversation.update!(expert_id: nil, status: "waiting")
+
+    # update the expert assignment to mark it resolved
+    assignment = ExpertAssignment.where(conversation: conversation, expert: @expert_profile).order(assigned_at: :desc).first
+
+    if assignment
+      assignment.update!(status: "resolved", resolved_at: Time.current)
+    end
+
     render json: { success: true }
 
   end
