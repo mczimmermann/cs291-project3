@@ -1,15 +1,21 @@
 class ExpertAssignment < ApplicationRecord
 
-    validates :conversation_id, presence: true
-    validates :expert_id, presence: true
-    validates :assigned_at, presence: true
+  # connect to ExpertProfile and Conversation
+  belongs_to :expert_profile, foreign_key: :expert_id
+  belongs_to :conversation
 
-    # sets default status to "Active"
-    before_save :set_default_string_if_blank
+  validates :conversation_id, presence: true
+  validates :expert_id, presence: true
+  validates :assigned_at, presence: true
+  validates :status, presence: true
 
-    private
+  # sets default status to "Active"
+  before_validation :set_default_status, on: :create
+
+  private
   
-    def set_default_string_if_blank
-      self.status = "Active" if self.status.blank?
-    end
+  def set_default_string_if_blank
+    self.status ||= "Active"
+  end
+
 end

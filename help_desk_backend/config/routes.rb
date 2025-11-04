@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get "experts/queue"
+  get "experts/claim"
+  get "experts/unclaim"
+  get "experts/show"
+  get "experts/update"
+  get "experts/history"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   post '/auth/register', to: 'users#register'

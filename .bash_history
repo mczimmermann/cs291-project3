@@ -122,3 +122,6 @@ rails test
 rails test
 rails test
 exit
+cd help_desk_backend
+rails generate controller Experts queue claim unclaim show update history
+exit
