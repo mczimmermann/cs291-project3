@@ -97,6 +97,7 @@ rails test
 rails test
 exit
 cd help_desk_backend
+<<<<<<< HEAD
 rails generate model ExpertProfile user_id:bigint bio:text knowledge_base_links:json
 rails db:migrate
 rails test
@@ -196,4 +197,14 @@ rails test
 rails test
 rails test
 rails test
+=======
+rails generate controller Health index
+rails test
+rails db:environment:set RAILS_ENV=test
+rails test
+rails test
+rails test
+git add .
+git commit -m "Added Health controller + route + tests"
+>>>>>>> origin/main
 exit
