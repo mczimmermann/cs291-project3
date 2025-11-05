@@ -26,7 +26,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "valid user's attributes should all exist" do
 
-    user = User.create(
+    user = User.new(
       username: "KateLarrick",
       password: "password123",
       password_confirmation: "password123",
@@ -34,7 +34,7 @@ class UserTest < ActiveSupport::TestCase
     )
 
     # Make sure user was saved
-    assert user.persisted?, "User was not saved"
+    assert user.save, "User was not saved"
 
     # Check that expected attributes exist and are not null
     assert_not_nil user.id, "id should not be null"
@@ -47,14 +47,14 @@ class UserTest < ActiveSupport::TestCase
 
   test "should not save two users with the same username" do
     
-    user1 = User.create(
+    user1 = User.new(
       username: "KateLarrick",
       password: "password123",
       password_confirmation: "password123",
       last_active_at: Time.current
     )
 
-    assert user1.persisted?, "User 1 (valid) was not saved"
+    assert user1.save, "User 1 (valid) was not saved"
 
     user2 = User.create(
       username: "KateLarrick",

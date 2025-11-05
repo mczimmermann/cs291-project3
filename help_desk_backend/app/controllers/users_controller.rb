@@ -1,6 +1,9 @@
 require_dependency Rails.root.join("app/services/jwt_service")
 
 class UsersController < ApplicationController
+
+  skip_before_action :authenticate_user!, only: [:register]
+  
   def register
     @user = User.new(user_params)
     @user.last_active_at = Time.current
