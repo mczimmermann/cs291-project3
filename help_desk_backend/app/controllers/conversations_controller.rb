@@ -30,7 +30,7 @@ class ConversationsController < ApplicationController
         conversation.initiator = @current_user
         conversation.status = "waiting"
         conversation.last_message_at = Time.current
-        
+
         if conversation.save
             render json: conversation_response(conversation), status: :created
         else
@@ -41,6 +41,6 @@ class ConversationsController < ApplicationController
     private
 
     def conversation_params
-        params.permit(:title)
+        params.permit(:id, :title)
     end
 end
