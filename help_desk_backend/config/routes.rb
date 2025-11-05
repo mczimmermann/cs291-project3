@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get "health/index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   post '/auth/register', to: 'users#register'
@@ -16,6 +15,15 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   get '/health', to: 'health#show'
+
+  # Conversations
+  resources :conversations, only: [:index, :show, :create] do
+    resources :messages, only: [:index], controller: "messages"
+  end
+
+  # Messages
+  resources :messages, only: [:create]
+  put "messages/:id/read", to: "messages#mark_read", as: :mark_message_read
 
   # Defines the root path route ("/")
   # root "posts#index"
