@@ -63,6 +63,14 @@ Che:
   - Creating expert assignment with status value overwrites default value
   - Saves valid expert assignment
 
+### HealthController
+- No authentication neccessary
+- HealthController file
+  - Actions: show (just shows health status)
+- Entry in the routes.rb file for actions
+- Tests
+  - GET /health returns ok status and timestamp
+
 # TO DO: (in general order)
 
 ### Message Model
@@ -97,13 +105,6 @@ Che:
 - Users JWT for token based authentication
 - ExpertController file
   - Actions: TO DO
-- Entry in the routes.rb file for actions
-- Tests
-
-### HealthController
-- No authentication neccessary
-- HealthController file
-  - Actions: TO DO (what even is this)
 - Entry in the routes.rb file for actions
 - Tests
 
