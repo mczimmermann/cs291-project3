@@ -165,3 +165,35 @@ rails test
 rails test
 rails test
 exit
+cd help_desk_backend
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+exit

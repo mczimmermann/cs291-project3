@@ -8,7 +8,7 @@ class ExpertsController < ApplicationController
   before_action :authenticate_expert
 
   # sets expert profile to current user's profile
-  before_action :set_expert_profile
+  before_action :set_expert
 
 
   # GET /expert/queue: get the expert queue (waiting and assigned conversations)
@@ -42,6 +42,7 @@ class ExpertsController < ApplicationController
       render json: { error: "Conversation is already assigned to an expert" },
              status: :unprocessable_entity
       return
+    end
     
     # update expert's conversation_id to the id of the conversation being claimed 
     conversation.update!(expert_id: @expert_profile.id, status: "active")
@@ -114,10 +115,17 @@ class ExpertsController < ApplicationController
 
   def authenticate_expert
 
+    token = request.headers["Authorization"]&.split(" ")&.last
     payload = JwtService.decode(token)
     @current_user = User.find_by(id: payload["user_id"])
 
-    if @current_user.nil? || @current_user.expert_profile.nil?
+    if @current_user.nil?
+      return render json: { error: "Current user = nil" }, status: :forbidden
+    end
+
+    @expert_profile = ExpertProfile.find_by(user_id: @current_user.id)
+
+    if @expert_profile.nil?
       return render json: { error: "Not authorized as expert" }, status: :forbidden
     end
 
@@ -127,7 +135,7 @@ class ExpertsController < ApplicationController
     @expert_profile = current_user.expert_profile
   end
 
-  def expert_params
+  def expert_profile_params
     params.permit(:bio, knowledgeBaseLinks: [])
   end
 
