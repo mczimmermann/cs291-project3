@@ -48,6 +48,7 @@ Che:
   - Missing user_id
   - Duplicate user_id
   - Saves valid expert profile
+  - user_id must be the id of a valid user
 
 ### Expert Assignment Model
 - ActiveRecord model file
