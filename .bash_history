@@ -208,3 +208,16 @@ git add .
 git commit -m "Added Health controller + route + tests"
 >>>>>>> origin/main
 exit
+cd help_desk_backend
+rails test
+rails db:migrate
+rails test
+rails test
+clear
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+exit
