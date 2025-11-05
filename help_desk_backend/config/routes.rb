@@ -10,6 +10,15 @@ Rails.application.routes.draw do
 
   get '/health', to: 'health#show'
 
+  # Conversations
+  resources :conversations, only: [:index, :show, :create] do
+    resources :messages, only: [:index], controller: "messages"
+  end
+
+  # Messages
+  resources :messages, only: [:create]
+  put "messages/:id/read", to: "messages#mark_read", as: :mark_message_read
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
