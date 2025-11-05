@@ -96,3 +96,13 @@ rails test
 rails test
 rails test
 exit
+cd help_desk_backend
+rails generate controller Health index
+rails test
+rails db:environment:set RAILS_ENV=test
+rails test
+rails test
+rails test
+git add .
+git commit -m "Added Health controller + route + tests"
+exit
