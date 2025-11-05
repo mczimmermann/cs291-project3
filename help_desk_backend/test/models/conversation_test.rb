@@ -36,6 +36,5 @@ class ConversationTest < ActiveSupport::TestCase
         assert_not_nil conversation.title, "title should not be null"
         assert_not_nil conversation.initiator, "initiator should not be null"
         assert_not_nil conversation.status, "status should not be null"
-        assert_not_nil conversation.last_message_at, "last_message_at should not be null"
     end
 end

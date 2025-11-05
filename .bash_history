@@ -221,3 +221,9 @@ rails test
 rails test
 rails test
 exit
+cd help_desk_backend
+rails test
+rails db:environment:set RAILS_ENV=test
+rails test
+rails test
+exit
