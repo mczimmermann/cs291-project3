@@ -14,7 +14,7 @@ class ExpertAssignment < ApplicationRecord
 
   private
   
-  def set_default_string_if_blank
+  def set_default_status
     self.status ||= "Active"
   end
 
