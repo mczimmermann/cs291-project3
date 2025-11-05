@@ -2,9 +2,9 @@ class ExpertAssignment < ApplicationRecord
 
   # connect to ExpertProfile and Conversation
   belongs_to :expert_profile, foreign_key: :expert_id
-  belongs_to :conversation
+  #belongs_to :conversation
 
-  validates :conversation_id, presence: true
+  #validates :conversation_id, presence: true
   validates :expert_id, presence: true
   validates :assigned_at, presence: true
   validates :status, presence: true

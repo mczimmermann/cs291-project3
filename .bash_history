@@ -128,3 +128,31 @@ exit
 cd help_desk_backend
 rails test
 exit
+cd help_desk_backend
+rails test
+rails test
+exit
+cd help_desk_backend
+rails test
+ping -c 1 db
+cd ..
+bin/rails db:create
+db:create
+rails db:create
+rails db:migrate
+rails test
+cd help_desk_backend
+rails db:migrate
+rails test
+rails test
+clear
+rails test
+clear
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+rails test
+exit
