@@ -1,9 +1,16 @@
 require "test_helper"
 
-class Api::UpdatesControllerTest < ActionDispatch::IntegrationTest
+class UpdatesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @initiator = User.create!(username: "asker", password: "pass123")
-    @expert = User.create!(username: "expert", password: "pass123")
+    @initiator = User.create!(
+      username: "asker",
+      password: "questions1234",
+      password_confirmation: "questions1234")
+    
+    @expert = User.create!(
+      username: "expert", 
+      password: "answers1234",
+      password_confirmation: "answers1234")
 
     @conversation = Conversation.create!(
       title: "Test Conversation",

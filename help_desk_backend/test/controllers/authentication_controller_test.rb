@@ -2,7 +2,11 @@ require "test_helper"
 
 class AuthenticationControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @user = User.create!(username: "john_doe", password: "password123")
+    @user = User.create!(
+      username: "testuser",
+      password: "password123",
+      password_confirmation: "password123"
+    )
   end
 
   test "should register a new user" do
@@ -14,7 +18,7 @@ class AuthenticationControllerTest < ActionDispatch::IntegrationTest
     assert_response :created
     json = JSON.parse(response.body)
 
-    assert json["user"]["username"] == "new_user"
+    assert_equal json["user"]["username"], "new_user"
     assert json["token"].present?
   end
 
