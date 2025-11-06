@@ -104,21 +104,12 @@ Che:
 - Entry in the routes.rb file for actions
 - Tests
 
-### Expert Controller
-- Users JWT for token based authentication
-- ExpertController file
-  - Actions: TO DO
-- Entry in the routes.rb file for actions
-- Tests
-
 ### Auth Controller
 - Uses session cookie for authentication where needed (register and login do not require auth)
 - AuthController file
   - Actions: TO DO
 - Entry in the routes.rb file for actions
 - Tests
-
-# TO DO: (in general order)
 
 ### UpdatesController
 - Users JWT for token based authentication
@@ -127,3 +118,11 @@ Che:
 - Entry in the routes.rb file for actions
 - Tests
 
+# TO DO: (in general order)
+
+### Expert Controller
+- Users JWT for token based authentication
+- ExpertController file
+  - Actions: TO DO
+- Entry in the routes.rb file for actions
+- Tests
