@@ -40,5 +40,5 @@ Rails.application.routes.draw do
   get  "/auth/me",       to: "authentication#me"
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root to: "health#show"
 end
