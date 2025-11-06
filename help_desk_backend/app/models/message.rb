@@ -10,7 +10,9 @@ class Message < ApplicationRecord
   after_create :update_conversation_last_message
   
   def set_sender_role
-    self.sender_role ||= if sender == conversation.initiator
+    return if sender_role.present?
+
+    self.sender_role = if sender == conversation.initiator
         "initiator"
       elsif sender == conversation.assigned_expert
         "expert"
