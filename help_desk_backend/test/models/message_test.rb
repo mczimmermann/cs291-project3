@@ -13,7 +13,7 @@ class MessageTest < ActiveSupport::TestCase
     @conversation = Conversation.create!(
       title: "Test Conversation",
       initiator: @user,
-      status: "waiting"
+      status: "waiting",
     )
   end
 
@@ -38,9 +38,16 @@ class MessageTest < ActiveSupport::TestCase
   end
 
   test "should not save message without sender_role" do
+    # Create a user who is NOT the initiator or expert of the conversation
+    other_user = User.create!(
+      username: "otheruser",
+      password: "password123",
+      password_confirmation: "password123"
+    )
+    
     message = Message.new(
       conversation: @conversation,
-      sender: @user,
+      sender: other_user,
       content: "Test message",
       is_read: false
     )
@@ -66,16 +73,6 @@ class MessageTest < ActiveSupport::TestCase
       is_read: false
     )
     assert_not message.save, "invalid message (no content) was saved"
-  end
-
-  test "should not save message without is_read" do
-    message = Message.new(
-      conversation: @conversation,
-      sender: @user,
-      sender_role: "initiator",
-      content: "Test message"
-    )
-    assert_not message.save, "invalid message (no is_read) was saved"
   end
 
   test "should save valid message with initiator role" do

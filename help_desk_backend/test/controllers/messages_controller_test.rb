@@ -178,7 +178,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "POST /messages creates a new message" do
     post "/messages",
          params: { conversation_id: @conversation.id, content: "New message" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     body = JSON.parse(response.body)
@@ -192,7 +193,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "POST /messages sets sender to current user" do
     post "/messages",
          params: { conversation_id: @conversation.id, content: "New message" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     message = Message.last
@@ -202,7 +204,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "POST /messages sets sender_role to initiator when user is initiator" do
     post "/messages",
          params: { conversation_id: @conversation.id, content: "New message" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     message = Message.last
@@ -225,7 +228,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     
     post "/messages",
          params: { conversation_id: expert_conversation.id, content: "Expert message" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     message = Message.last
@@ -235,7 +239,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "POST /messages sets is_read to false by default" do
     post "/messages",
          params: { conversation_id: @conversation.id, content: "New message" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     message = Message.last
@@ -258,7 +263,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     
     post "/messages",
          params: { conversation_id: waiting_conversation.id, content: "New message" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     waiting_conversation.reload
@@ -268,7 +274,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "POST /messages requires content" do
     post "/messages",
          params: { conversation_id: @conversation.id },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :unprocessable_entity
     body = JSON.parse(response.body)
@@ -278,7 +285,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "POST /messages rejects empty content" do
     post "/messages",
          params: { conversation_id: @conversation.id, content: "" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :unprocessable_entity
     body = JSON.parse(response.body)
@@ -288,7 +296,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "POST /messages requires conversation_id" do
     post "/messages",
          params: { content: "Test message" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :not_found
     body = JSON.parse(response.body)
@@ -298,7 +307,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "POST /messages returns 404 if conversation not found" do
     post "/messages",
          params: { conversation_id: 99999, content: "Test message" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :not_found
     body = JSON.parse(response.body)
@@ -320,7 +330,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
     
     post "/messages",
          params: { conversation_id: other_conversation.id, content: "Test message" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :not_found
     body = JSON.parse(response.body)
@@ -338,7 +349,8 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   test "POST /messages response includes all required fields" do
     post "/messages",
          params: { conversation_id: @conversation.id, content: "New message" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     body = JSON.parse(response.body)
@@ -369,7 +381,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
       is_read: false
     )
     
-    put "/messages/#{message.id}/read", headers: @headers
+    put "/messages/#{message.id}/read", headers: @headers, as: :json
     
     assert_response :success
     body = JSON.parse(response.body)
@@ -380,7 +392,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /messages/:id/read returns 404 if message not found" do
-    put "/messages/99999/read", headers: @headers
+    put "/messages/99999/read", headers: @headers, as: :json
     
     assert_response :not_found
     body = JSON.parse(response.body)
@@ -408,7 +420,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
       is_read: false
     )
     
-    put "/messages/#{message.id}/read", headers: @headers
+    put "/messages/#{message.id}/read", headers: @headers, as: :json
     
     assert_response :not_found
     body = JSON.parse(response.body)
@@ -424,7 +436,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
       is_read: false
     )
     
-    put "/messages/#{message.id}/read", headers: @headers
+    put "/messages/#{message.id}/read", headers: @headers, as: :json
     
     assert_response :forbidden
     body = JSON.parse(response.body)
@@ -456,7 +468,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
       is_read: false
     )
     
-    put "/messages/#{message.id}/read", headers: @headers
+    put "/messages/#{message.id}/read", headers: @headers, as: :json
     
     assert_response :success
     message.reload
@@ -485,7 +497,7 @@ class MessagesControllerTest < ActionDispatch::IntegrationTest
       is_read: false
     )
     
-    put "/messages/#{message.id}/read", headers: @headers
+    put "/messages/#{message.id}/read", headers: @headers, as: :json
     
     assert_response :success
     message.reload

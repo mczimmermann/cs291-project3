@@ -13,6 +13,8 @@ class UpdatesControllerTest < ActionDispatch::IntegrationTest
       password: "answers1234",
       password_confirmation: "answers1234"
       )
+    
+    ExpertProfile.create!(user: @expert)
 
     @conversation = Conversation.create!(
       title: "Test Conversation",
@@ -29,13 +31,14 @@ class UpdatesControllerTest < ActionDispatch::IntegrationTest
       is_read: false
     )
 
-    @initiator_token = JwtService.encode(user_id: @initiator.id)
-    @expert_token = JwtService.encode(user_id: @expert.id)
+    @initiator_token = JwtService.encode(@initiator)
+    @expert_token = JwtService.encode(@expert)
   end
 
   test "should get updated conversations for user" do
     get "/api/conversations/updates",
-        headers: { "Authorization" => "Bearer #{@initiator_token}" }
+        headers: { "Authorization" => "Bearer #{@initiator_token}" },
+        as: :json
 
     assert_response :success
     json = JSON.parse(response.body)
@@ -45,7 +48,8 @@ class UpdatesControllerTest < ActionDispatch::IntegrationTest
 
   test "should get recent messages for user" do
     get "/api/messages/updates",
-        headers: { "Authorization" => "Bearer #{@expert_token}" }
+        headers: { "Authorization" => "Bearer #{@expert_token}" },
+        as: :json
 
     assert_response :success
     json = JSON.parse(response.body)
@@ -66,7 +70,8 @@ class UpdatesControllerTest < ActionDispatch::IntegrationTest
     )
 
     get "/api/expert-queue/updates",
-        headers: { "Authorization" => "Bearer #{@expert_token}" }
+        headers: { "Authorization" => "Bearer #{@expert_token}" },
+        as: :json
 
     assert_response :success
     json = JSON.parse(response.body)

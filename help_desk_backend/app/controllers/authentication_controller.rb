@@ -4,10 +4,12 @@ class AuthenticationController < ApplicationController
   
     # POST /auth/register
     def register
+      Rails.logger.debug "Raw params: #{params.inspect}"
+      Rails.logger.debug "User params: #{user_params.inspect}"
       user = User.new(user_params)
   
       if user.save
-        token = JwtService.encode(user_id: user.id)
+        token = JwtService.encode(user)
         render json: {
           user: user_response(user),
           token: token
@@ -23,7 +25,7 @@ class AuthenticationController < ApplicationController
   
       if user && user.authenticate(params[:password])
         user.update(last_active_at: Time.current)
-        token = JwtService.encode(user_id: user.id)
+        token = JwtService.encode(user)
         render json: {
           user: user_response(user),
           token: token
@@ -42,7 +44,7 @@ class AuthenticationController < ApplicationController
     # POST /auth/refresh
     def refresh
       if @current_user
-        token = JwtService.encode(user_id: @current_user.id)
+        token = JwtService.encode(@current_user)
         render json: {
           user: user_response(@current_user),
           token: token
@@ -65,7 +67,7 @@ class AuthenticationController < ApplicationController
   
     # Strong params for registration
     def user_params
-      params.permit(:username, :password)
+      params.require(:user).permit(:username, :password, :password_confirmation)
     end
   
     # Standard user JSON structure

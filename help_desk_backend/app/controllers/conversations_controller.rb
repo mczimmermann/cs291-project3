@@ -27,6 +27,8 @@ class ConversationsController < ApplicationController
     # POST /conversations
     def create
         conversation = Conversation.new(conversation_params)
+        conversation.initiator = @current_user
+        conversation.status ||= "waiting"
         conversation.last_message_at = Time.current
 
         if conversation.save
@@ -39,7 +41,7 @@ class ConversationsController < ApplicationController
     private
 
     def conversation_params
-        params.permit(:title, :status, :initiator, :assigned_expert)
+        params.permit(:title, :status)
     end
 
     def conversation_response(conversation)

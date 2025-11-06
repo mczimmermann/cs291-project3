@@ -223,7 +223,8 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "POST /conversations creates a new conversation" do
     post "/conversations",
          params: { title: "New Conversation" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     body = JSON.parse(response.body)
@@ -237,7 +238,8 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "POST /conversations sets initiator to current user" do
     post "/conversations",
          params: { title: "New Conversation" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     conversation = Conversation.last
@@ -247,7 +249,8 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "POST /conversations sets status to waiting" do
     post "/conversations",
          params: { title: "New Conversation" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     conversation = Conversation.last
@@ -257,7 +260,8 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "POST /conversations sets last_message_at" do
     post "/conversations",
          params: { title: "New Conversation" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     conversation = Conversation.last
@@ -267,7 +271,8 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "POST /conversations requires title" do
     post "/conversations",
          params: {},
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :unprocessable_entity
     body = JSON.parse(response.body)
@@ -277,7 +282,8 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "POST /conversations rejects empty title" do
     post "/conversations",
          params: { title: "" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :unprocessable_entity
     body = JSON.parse(response.body)
@@ -295,7 +301,8 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "POST /conversations ignores id parameter" do
     post "/conversations",
          params: { title: "New Conversation", id: 999 },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     conversation = Conversation.last
@@ -306,7 +313,8 @@ class ConversationsControllerTest < ActionDispatch::IntegrationTest
   test "POST /conversations response includes all required fields" do
     post "/conversations",
          params: { title: "New Conversation" },
-         headers: @headers
+         headers: @headers,
+         as: :json
     
     assert_response :created
     body = JSON.parse(response.body)
