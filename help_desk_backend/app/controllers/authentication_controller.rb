@@ -4,8 +4,6 @@ class AuthenticationController < ApplicationController
   
     # POST /auth/register
     def register
-      Rails.logger.debug "Raw params: #{params.inspect}"
-      Rails.logger.debug "User params: #{user_params.inspect}"
       user = User.new(user_params)
   
       if user.save
