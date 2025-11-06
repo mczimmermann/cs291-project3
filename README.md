@@ -2,6 +2,7 @@
 Run the following:
 
 `unset DATABASE_URL && DB_HOST=db DB_PASSWORD=password RAILS_ENV=test rails db:create db:migrate`
+
 `rails test`
 
 `DB_HOST=db DB_PASSWORD=password RAILS_ENV=test rails server -b 0.0.0.0 -p 3000`
