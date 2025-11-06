@@ -5,7 +5,7 @@ class MessagesController < ApplicationController
   
   # GET /conversations/:conversation_id/messages
   def index
-    conversation = Conversation.find_by(id: message_params[:conversation_id])
+    conversation = Conversation.find_by(id: params[:conversation_id])
     
     unless conversation
       return render json: { error: "Conversation not found" }, status: :not_found
@@ -25,7 +25,7 @@ class MessagesController < ApplicationController
 
   # POST /messages
   def create
-    conversation = Conversation.find_by(id: message_params[:conversation_id])
+    conversation = Conversation.find_by(id: params[:conversation_id])
 
     unless conversation
       return render json: { error: "Conversation not found" }, status: :not_found
@@ -47,7 +47,7 @@ class MessagesController < ApplicationController
       conversation: conversation,
       sender: @current_user,
       sender_role: current_role,
-      content: message_params[:content],
+      content: params[:content],
       is_read: false
     )
 
@@ -60,7 +60,7 @@ class MessagesController < ApplicationController
 
   # PUT /messages/:id/read
   def mark_read
-    message = Message.find_by(id: message_params[:id])
+    message = Message.find_by(id: params[:id])
 
     unless message
       return render json: { error: "Message not found" }, status: :not_found
@@ -96,8 +96,5 @@ class MessagesController < ApplicationController
     }
   end
 
-  def message_params
-    params.permit(:content, :id, :conversation_id)
-  end
 end
 

@@ -33,6 +33,7 @@ module Api
     # GET /api/expert-queue/updates
     def expert_queue
       ensure_expert
+      return if performed? # Exit early if ensure_expert rendered a response
       
       since = params[:since] ? Time.parse(params[:since]) : 1.hour.ago
       

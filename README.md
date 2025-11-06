@@ -1,3 +1,8 @@
+# In order to run the tests on the test database
+Run the following:
+`unset DATABASE_URL && DB_HOST=db DB_PASSWORD=password RAILS_ENV=test rails db:create db:migrate`
+`rails test`
+
 # WORK ASSIGNMENTS:
 
 Katie:
@@ -71,8 +76,6 @@ Che:
 - Tests
   - GET /health returns ok status and timestamp
 
-# TO DO: (in general order)
-
 ### Message Model
 - ActiveRecord model file
   - Attributes to pass in: conversation_id (bigint, not null), sender_id (bigint, not null), sender_role (string, not null & enum: \[initiator, expert\], content (text, not null), is_read (boolean, not null & default = false)
@@ -108,6 +111,15 @@ Che:
 - Entry in the routes.rb file for actions
 - Tests
 
+### Auth Controller
+- Uses session cookie for authentication where needed (register and login do not require auth)
+- AuthController file
+  - Actions: TO DO
+- Entry in the routes.rb file for actions
+- Tests
+
+# TO DO: (in general order)
+
 ### UpdatesController
 - Users JWT for token based authentication
 - UpdatesController file
@@ -115,9 +127,3 @@ Che:
 - Entry in the routes.rb file for actions
 - Tests
 
-### Auth Controller
-- Uses session cookie for authentication where needed (register and login do not require auth)
-- AuthController file
-  - Actions: TO DO
-- Entry in the routes.rb file for actions
-- Tests
