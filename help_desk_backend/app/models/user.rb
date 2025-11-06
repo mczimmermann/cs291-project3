@@ -1,5 +1,6 @@
 class User < ApplicationRecord
     has_secure_password
+    has_one :expert_profile, dependent: :destroy
 
     # username should be not null and unique
     validates :username, presence: true, uniqueness: true

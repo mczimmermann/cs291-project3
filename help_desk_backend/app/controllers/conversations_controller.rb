@@ -43,4 +43,20 @@ class ConversationsController < ApplicationController
     def conversation_params
         params.permit(:id, :title)
     end
+
+    def conversation_response(conversation)
+        {
+            id: conversation.id.to_s,
+            title: conversation.title,
+            status: conversation.status,
+            questionerId: conversation.initiator_id.to_s,
+            questionerUsername: conversation.initiator.username,
+            assignedExpertId: conversation.assigned_expert_id&.to_s,
+            assignedExpertUsername: conversation.assigned_expert&.username,
+            createdAt: conversation.created_at.iso8601,
+            updatedAt: conversation.updated_at.iso8601,
+            lastMessageAt: conversation.last_message_at&.iso8601,
+            unreadCount: conversation.unread_count_for(@current_user)
+        }
+    end
 end
