@@ -2,8 +2,16 @@ require "test_helper"
 
 class Api::UpdatesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @initiator = User.create!(username: "asker", password: "pass123")
-    @expert = User.create!(username: "expert", password: "pass123")
+    @initiator = User.create!(
+      username: "asker", 
+      password: "pass123",
+      password_confirmation: "pass123"
+    )
+    @expert = User.create!(
+      username: "expert", 
+      password: "pass123",
+      password_confirmation: "pass123"
+    )
 
     @conversation = Conversation.create!(
       title: "Test Conversation",
@@ -61,7 +69,7 @@ class Api::UpdatesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     json = JSON.parse(response.body)
-    assert json["waitingConversations"].any?
-    assert json["assignedConversations"].any?
+    assert_operator json["waitingConversations"].length, :>, 0
+    assert_operator json["assignedConversations"].length, :>, 0
   end
 end
