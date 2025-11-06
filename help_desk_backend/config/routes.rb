@@ -32,6 +32,13 @@ Rails.application.routes.draw do
     get "expert-queue/updates", to: "updates#expert_queue"
   end
 
+  # Authentication endpoints
+  post "/auth/register", to: "authentication#register"
+  post "/auth/login",    to: "authentication#login"
+  post "/auth/logout",   to: "authentication#logout"
+  post "/auth/refresh",  to: "authentication#refresh"
+  get  "/auth/me",       to: "authentication#me"
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
