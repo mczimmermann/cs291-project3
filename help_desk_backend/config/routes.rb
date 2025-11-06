@@ -25,6 +25,13 @@ Rails.application.routes.draw do
   resources :messages, only: [:create]
   put "messages/:id/read", to: "messages#mark_read", as: :mark_message_read
 
+  # Update/polling endpoints
+  namespace :api do
+    get "conversations/updates", to: "updates#conversations"
+    get "messages/updates", to: "updates#messages"
+    get "expert-queue/updates", to: "updates#expert_queue"
+  end
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
