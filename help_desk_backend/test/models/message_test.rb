@@ -159,6 +159,7 @@ class MessageTest < ActiveSupport::TestCase
     message = Message.new(
       conversation: @conversation,
       sender: @user,
+      sender_role: "initiator",
       content: "Test message",
       is_read: false
     )

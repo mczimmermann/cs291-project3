@@ -97,7 +97,7 @@ class MessagesController < ApplicationController
   end
 
   def message_params
-    params.permit(:content, :id, :conversation_id)
+    params.permit(:content, :conversation, :sender, :sender_role, :is_read)
   end
 end
 
