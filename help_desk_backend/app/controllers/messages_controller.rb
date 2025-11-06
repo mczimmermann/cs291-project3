@@ -34,7 +34,7 @@ class MessagesController < ApplicationController
     # Check if user has access to this conversation
     unless conversation.initiator == @current_user || conversation.assigned_expert == @current_user
       return render json: { error: "Conversation not found" }, status: :not_found
-    endi
+    end
 
     # Update conversation status if it was waiting and an expert is assigned
     if conversation.status == "waiting" && conversation.assigned_expert
