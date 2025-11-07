@@ -14,16 +14,14 @@ class ExpertsController < ApplicationController
     waiting = Conversation.where(assigned_expert: nil, status: "waiting")
 
     # get all assigned conversations
-    assigned = Conversation.where(assigned_expert: @expert_profile)
+    assigned = Conversation.where(assigned_expert: @expert_profile.user)
 
     # make json based on return in API specification
     render json: {
       waitingConversations: waiting.map do |convo|
-        #format_conversation(convo)
         convo
       end,
       assignedConversations: assigned.map do |convo|
-        #format_conversation(convo)
         convo
       end
     }
@@ -140,33 +138,6 @@ class ExpertsController < ApplicationController
       :bio,
       knowledge_base_links: []
     )
-  end
-
-  def format_conversation(conv)
-    {
-      id: conv.id.to_s,
-      title: conv.title,
-      status: conv.status,
-      questionerId: conv.user_id.to_s,
-      questionerUsername: conv.user.username,
-      assignedExpertId: conv.expert_id&.to_s,
-      assignedExpertUsername: conv.expert_profile&.user&.username,
-      createdAt: conv.created_at.iso8601,
-      updatedAt: conv.updated_at.iso8601,
-      lastMessageAt: conv.last_message_at&.iso8601,
-      unreadCount: conv.unread_messages_count_for_expert(@expert_profile)
-    }
-  end
-
-  def format_profile(profile)
-    {
-      id: profile.id.to_s,
-      userId: profile.user_id.to_s,
-      bio: profile.bio,
-      knowledgeBaseLinks: profile.knowledge_base_links,
-      createdAt: profile.created_at.iso8601,
-      updatedAt: profile.updated_at.iso8601
-    }
   end
 
   def format_assignment(assignment)

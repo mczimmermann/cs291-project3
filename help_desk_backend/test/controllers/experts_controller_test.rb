@@ -178,37 +178,33 @@ class ExpertsControllerTest < ActionDispatch::IntegrationTest
 
 
   # GET /expert/queue: get the expert queue (waiting and assigned conversations)
-  # test "GET /expert/queue returns waiting and assigned conversations" do
+  test "GET /expert/queue returns waiting and assigned conversations" do
 
-  #   waiting_conversation = Conversation.create!(
-  #     title: "Waiting Question",
-  #     initiator: @user,
-  #     status: "waiting",
-  #   )
+    waiting_conversation = Conversation.create!(
+      title: "Waiting Question",
+      initiator: @user,
+      status: "waiting",
+    )
   
-  #   assigned_conversation = Conversation.create!(
-  #     title: "Assigned Question Test",
-  #     initiator: @user,
-  #     status: "active",
-  #     assigned_expert: @expert_profile.user
-  #   )
+    assigned_conversation = Conversation.create!(
+      title: "Assigned Question Test",
+      initiator: @user,
+      status: "active",
+      assigned_expert: @expert_profile.user
+    )
   
-  #   get "/expert/queue", headers: @headers
-  #   assert_response :success
+    get "/expert/queue", headers: @headers
+    assert_response :success
   
-  #   json = JSON.parse(@response.body)
+    json = JSON.parse(@response.body)
   
-  #   assert json.key?("waitingConversations")
-  #   assert json.key?("assignedConversations")
+    assert json.key?("waitingConversations")
+    assert json.key?("assignedConversations")
   
-  #   waiting_ids = json["waitingConversations"].map { |c| c["id"].to_i }
-  #   puts "waiting ids: #{waiting_ids}"
-  #   puts "waiting conversation id: #{waiting_conversation.id}"
-  #   assert_includes waiting_ids, waiting_conversation.id
+    waiting_ids = json["waitingConversations"].map { |c| c["id"].to_i }
+    assert_includes waiting_ids, waiting_conversation.id
   
-  #   assigned_ids = json["assignedConversations"].map { |c| c["id"].to_i }
-  #   puts "assigned ids: #{assigned_ids}"
-  #   puts "assigned conversation id: #{assigned_conversation.id}"
-  #   assert_includes assigned_ids, assigned_conversation.id
-  # end
+    assigned_ids = json["assignedConversations"].map { |c| c["id"].to_i }
+    assert_includes assigned_ids, assigned_conversation.id
+  end
 end
