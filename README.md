@@ -122,11 +122,12 @@ Che:
 - Entry in the routes.rb file for actions
 - Tests
 
-# TO DO: (in general order)
-
 ### Expert Controller
 - Users JWT for token based authentication
 - ExpertController file
   - Actions: TO DO
 - Entry in the routes.rb file for actions
 - Tests
+
+# TO DO: (in general order)
+Test with frontend and make video!
