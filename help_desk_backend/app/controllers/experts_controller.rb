@@ -11,18 +11,20 @@ class ExpertsController < ApplicationController
   def queue
 
     # get all waiting conversations (no expert assigned)
-    waiting = Conversation.where(expert_id: nil, status: "waiting")
+    waiting = Conversation.where(assigned_expert: nil, status: "waiting")
 
     # get all assigned conversations
-    assigned = Conversation.where(expert_id: @expert_profile.id)
+    assigned = Conversation.where(assigned_expert: @expert_profile)
 
     # make json based on return in API specification
     render json: {
       waitingConversations: waiting.map do |convo|
-        format_conversation(convo)
+        #format_conversation(convo)
+        convo
       end,
       assignedConversations: assigned.map do |convo|
-        format_conversation(convo)
+        #format_conversation(convo)
+        convo
       end
     }
   end
@@ -85,7 +87,6 @@ class ExpertsController < ApplicationController
   # GET /expert/profile: get the current expert's profile.
   def show
     render json: @expert_profile
-    #render json: format_profile(@expert_profile)
   end
 
   # PUT /expert/profile: update the expert's profile.
