@@ -136,7 +136,10 @@ class ExpertsController < ApplicationController
   end
 
   def expert_profile_params
-    params.permit(:bio, knowledgeBaseLinks: [])
+    params.require(:expert_profile).permit(
+      :bio,
+      knowledge_base_links: []
+    )
   end
 
   def format_conversation(conv)

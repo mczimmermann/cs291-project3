@@ -94,6 +94,33 @@ class ExpertsControllerTest < ActionDispatch::IntegrationTest
 
 
   # PUT /expert/profile: update the expert's profile.
+  test "PUT /expert/profile updates the expert profile" do
+
+    update_params = {
+      expert_profile: {
+        bio: "Updated Bio",
+        knowledge_base_links: ["https://example.com/article1"]
+      }
+    }
+
+    put "/expert/profile",
+      params: update_params.to_json,
+      headers: @headers
+
+    assert_response :success
+
+    json = JSON.parse(@response.body)
+
+    # Verify returned fields updated correctly
+    assert_equal "Updated Bio", json["bio"]
+    assert_equal ["https://example.com/article1"], json["knowledge_base_links"]
+
+    # Reload and verify DB update
+    @expert_profile.reload
+    assert_equal "Updated Bio", @expert_profile.bio
+    assert_equal ["https://example.com/article1"], @expert_profile.knowledge_base_links
+  end
+
 
   # GET /expert/assignments/history: get the expert's assignment history.
 
