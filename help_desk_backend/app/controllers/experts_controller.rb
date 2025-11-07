@@ -36,19 +36,24 @@ class ExpertsController < ApplicationController
     conversation = Conversation.find(params[:conversation_id])
 
     # check if conversation already has an expert assigned
-    if conversation.expert_id.present?
+    if conversation.assigned_expert.present?
       render json: { error: "Conversation is already assigned to an expert" },
              status: :unprocessable_entity
       return
     end
+
+    #user = User.find(params[:expert_profile.user_id])
     
     # update expert's conversation_id to the id of the conversation being claimed 
-    conversation.update!(expert_id: @expert_profile.id, status: "active")
+    conversation.update!(
+      assigned_expert: @expert_profile.user,
+      status: "active"
+    )
 
     # make Expert Assignment object to store this assignment
     ExpertAssignment.create!(
       conversation: conversation,
-      expert: @expert_profile,
+      expert_id: @expert_profile.id,
       status: "active",
       assigned_at: Time.current
     )
@@ -74,7 +79,7 @@ class ExpertsController < ApplicationController
     conversation.update!(expert_id: nil, status: "waiting")
 
     # update the expert assignment to mark it resolved
-    assignment = ExpertAssignment.where(conversation: conversation, expert: @expert_profile).order(assigned_at: :desc).first
+    assignment = ExpertAssignment.where(conversation: conversation, assigned_expert: @expert_profile).order(assigned_at: :desc).first
 
     if assignment
       assignment.update!(status: "resolved", resolved_at: Time.current)
