@@ -123,8 +123,61 @@ class ExpertsControllerTest < ActionDispatch::IntegrationTest
 
 
   # GET /expert/assignments/history: get the expert's assignment history.
+  test "GET /expert/assignments/history returns expert assignments" do
+    
+    # Create some conversations
+    convo1 = Conversation.create!(
+      title: "First Assignment",
+      initiator: @user,
+      status: "active",
+      assigned_expert: @expert_profile.user
+    )
+    convo2 = Conversation.create!(
+      title: "Second Assignment",
+      initiator: @user,
+      status: "active",
+      assigned_expert: @expert_profile.user
+    )
 
-    # GET /expert/queue: get the expert queue (waiting and assigned conversations)
+    # Create corresponding ExpertAssignments
+    assignment1 = ExpertAssignment.create!(
+      conversation: convo1,
+      expert_id: @expert_profile.id,
+      status: "active",
+      assigned_at: 2.days.ago
+    )
+    assignment2 = ExpertAssignment.create!(
+      conversation: convo2,
+      expert_id: @expert_profile.id,
+      status: "resolved",
+      assigned_at: 1.day.ago,
+      resolved_at: Time.current
+    )
+
+    get "/expert/assignments/history", headers: @headers
+    assert_response :success
+
+    json = JSON.parse(@response.body)
+
+    # Verify we got an array with 2 assignments
+    assert_equal 2, json.size
+
+    # Check first assignment (most recent first)
+    assert_equal assignment2.id, json[0]["id"].to_i
+    assert_equal assignment2.conversation_id, json[0]["conversationId"].to_i
+    assert_equal assignment2.expert_id, json[0]["expertId"].to_i
+    assert_equal "resolved", json[0]["status"]
+    assert_not_nil json[0]["assignedAt"]
+    assert_not_nil json[0]["resolvedAt"]
+
+    # Check second assignment
+    assert_equal assignment1.id, json[1]["id"].to_i
+    assert_equal "active", json[1]["status"]
+    assert_nil json[1]["resolvedAt"]
+  end
+
+
+  # GET /expert/queue: get the expert queue (waiting and assigned conversations)
   # test "GET /expert/queue returns waiting and assigned conversations" do
 
   #   waiting_conversation = Conversation.create!(
