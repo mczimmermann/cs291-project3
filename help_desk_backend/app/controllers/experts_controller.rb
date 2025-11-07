@@ -69,17 +69,17 @@ class ExpertsController < ApplicationController
     conversation = Conversation.find(params[:conversation_id])
 
     # check if conversation is assigned to the current expert
-    unless conversation.expert_id == @expert_profile.id
+    unless conversation.assigned_expert.id == @expert_profile.user_id
       render json: { error: "Current expert is not assigned to this conversation" },
         status: :forbidden
       return
     end
 
     # remove the expert's id from the conversation and change status
-    conversation.update!(expert_id: nil, status: "waiting")
+    conversation.update!(assigned_expert: nil, status: "waiting")
 
     # update the expert assignment to mark it resolved
-    assignment = ExpertAssignment.where(conversation: conversation, assigned_expert: @expert_profile).order(assigned_at: :desc).first
+    assignment = ExpertAssignment.where(conversation: conversation, expert_id: @expert_profile).order(assigned_at: :desc).first
 
     if assignment
       assignment.update!(status: "resolved", resolved_at: Time.current)
