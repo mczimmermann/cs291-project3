@@ -7,10 +7,6 @@ class ExpertsController < ApplicationController
   # authenticates expert with JWT token
   before_action :authenticate_expert
 
-  # sets expert profile to current user's profile
-  before_action :set_expert
-
-
   # GET /expert/queue: get the expert queue (waiting and assigned conversations)
   def queue
 
@@ -113,11 +109,13 @@ class ExpertsController < ApplicationController
 
   private
 
+  # authenticates expert with JWT token
   def authenticate_expert
 
     token = request.headers["Authorization"]&.split(" ")&.last
-    payload = JwtService.decode(token)
-    @current_user = User.find_by(id: payload["user_id"])
+
+    payload = JwtService.decode(token).with_indifferent_access
+    @current_user = User.find_by(id: payload[:user_id])
 
     if @current_user.nil?
       return render json: { error: "Current user = nil" }, status: :forbidden
@@ -129,10 +127,6 @@ class ExpertsController < ApplicationController
       return render json: { error: "Not authorized as expert" }, status: :forbidden
     end
 
-  end
-
-  def set_expert
-    @expert_profile = current_user.expert_profile
   end
 
   def expert_profile_params
