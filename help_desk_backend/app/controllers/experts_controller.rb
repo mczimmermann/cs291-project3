@@ -88,18 +88,38 @@ class ExpertsController < ApplicationController
   end
 
   # GET /expert/profile: get the current expert's profile.
+  # def show
+  #   render json: @expert_profile
+  # end
+
   def show
-    render json: @expert_profile
+    profile = @expert_profile
+    render json: {
+      id: profile.id,
+      bio: profile.bio,
+      knowledgeBaseLinks: profile.knowledge_base_links.presence || []
+    }
   end
 
   # PUT /expert/profile: update the expert's profile.
   def update
 
+    # if @expert_profile.update(expert_profile_params)
+    #   render json: @expert_profile
+    # else
+    #   render json: { errors: @expert_profile.errors.full_messages }, status: :unprocessable_entity
+    # end
+
     if @expert_profile.update(expert_profile_params)
-      render json: @expert_profile
+      render json: {
+        id: @expert_profile.id,
+        bio: @expert_profile.bio,
+        knowledgeBaseLinks: @expert_profile.knowledge_base_links.presence
+      }
     else
       render json: { errors: @expert_profile.errors.full_messages }, status: :unprocessable_entity
     end
+
   end
 
   # GET /expert/assignments/history: get the expert's assignment history.

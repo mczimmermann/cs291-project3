@@ -8,12 +8,12 @@ class MessagesController < ApplicationController
     conversation = Conversation.find_by(id: params[:conversation_id])
     
     unless conversation
-      return render json: { error: "Conversation not found" }, status: :not_found
+      return render json: { error: "(a) Conversation not found" }, status: :not_found
     end
 
     # Check if user has access to this conversation
     unless conversation.initiator == @current_user || conversation.assigned_expert == @current_user
-      return render json: { error: "Conversation not found" }, status: :not_found
+      return render json: { error: "(b) Conversation not found" }, status: :not_found
     end
 
     messages = conversation.messages
@@ -28,12 +28,12 @@ class MessagesController < ApplicationController
     conversation = Conversation.find_by(id: params[:conversation_id])
 
     unless conversation
-      return render json: { error: "Conversation not found" }, status: :not_found
+      return render json: { error: "(1) Conversation not found" }, status: :not_found
     end
 
     # Check if user has access to this conversation
     unless conversation.initiator == @current_user || conversation.assigned_expert == @current_user
-      return render json: { error: "Conversation not found" }, status: :not_found
+      return render json: { error: "(2) Conversation not found" }, status: :not_found
     end
 
     # Update conversation status if it was waiting and an expert is assigned
