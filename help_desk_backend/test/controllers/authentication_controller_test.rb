@@ -27,9 +27,11 @@ class AuthenticationControllerTest < ActionDispatch::IntegrationTest
 
   test "should not register duplicate username" do
     post "/auth/register", params: {
-      username: @user.username,
-      password: "anotherpass",
-      password_confirmation: "anotherpass"
+      user: {
+        username: @user.username,
+        password: "anotherpass",
+        password_confirmation: "anotherpass"
+      }
     }, as: :json
 
     assert_response :unprocessable_entity
@@ -40,8 +42,10 @@ class AuthenticationControllerTest < ActionDispatch::IntegrationTest
 
   test "should login with valid credentials" do
     post "/auth/login", params: {
-      username: @user.username,
-      password: "password123"
+      user: {
+        username: @user.username,
+        password: "password123"
+      }
     }
 
     assert_response :success
@@ -52,8 +56,10 @@ class AuthenticationControllerTest < ActionDispatch::IntegrationTest
 
   test "should reject invalid login" do
     post "/auth/login", params: {
-      username: @user.username,
-      password: "wrongpass"
+      user: {
+        username: @user.username,
+        password: "wrongpass"
+      }
     }
 
     assert_response :unauthorized

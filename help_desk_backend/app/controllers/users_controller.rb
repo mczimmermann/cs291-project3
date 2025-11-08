@@ -9,6 +9,8 @@ class UsersController < ApplicationController
     @user.last_active_at = Time.current
 
     if @user.save
+      ExpertProfile.create!(user_id: user.id)
+
       token = JwtService.encode(@user)
       render json: {
         user: {

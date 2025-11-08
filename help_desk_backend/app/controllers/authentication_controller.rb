@@ -7,6 +7,8 @@ class AuthenticationController < ApplicationController
       user = User.new(user_params)
   
       if user.save
+        ExpertProfile.create!(user_id: user.id)
+
         token = JwtService.encode(user)
         render json: {
           user: user_response(user),
@@ -15,14 +17,16 @@ class AuthenticationController < ApplicationController
       else
         render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
       end
+
     end
   
     # POST /auth/login
     def login
-      user = User.find_by(username: params[:username])
-  
-      if user && user.authenticate(params[:password])
-        user.update(last_active_at: Time.current)
+      user_params = params.require(:user).permit(:username, :password)
+      user = User.find_by(username: user_params[:username])
+    
+      if user && user.authenticate(user_params[:password])
+        user.update!(last_active_at: Time.current)
         token = JwtService.encode(user)
         render json: {
           user: user_response(user),

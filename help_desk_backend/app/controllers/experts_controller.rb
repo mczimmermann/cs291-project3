@@ -7,26 +7,22 @@ class ExpertsController < ApplicationController
   # authenticates expert with JWT token
   before_action :authenticate_expert
 
-  # sets expert profile to current user's profile
-  before_action :set_expert
-
-
   # GET /expert/queue: get the expert queue (waiting and assigned conversations)
   def queue
 
     # get all waiting conversations (no expert assigned)
-    waiting = Conversation.where(expert_id: nil, status: "waiting")
+    waiting = Conversation.where(assigned_expert: nil, status: "waiting")
 
     # get all assigned conversations
-    assigned = Conversation.where(expert_id: @expert_profile.id)
+    assigned = Conversation.where(assigned_expert: @expert_profile.user)
 
     # make json based on return in API specification
     render json: {
       waitingConversations: waiting.map do |convo|
-        format_conversation(convo)
+        convo
       end,
       assignedConversations: assigned.map do |convo|
-        format_conversation(convo)
+        convo
       end
     }
   end
@@ -38,19 +34,24 @@ class ExpertsController < ApplicationController
     conversation = Conversation.find(params[:conversation_id])
 
     # check if conversation already has an expert assigned
-    if conversation.expert_id.present?
+    if conversation.assigned_expert.present?
       render json: { error: "Conversation is already assigned to an expert" },
              status: :unprocessable_entity
       return
     end
+
+    #user = User.find(params[:expert_profile.user_id])
     
     # update expert's conversation_id to the id of the conversation being claimed 
-    conversation.update!(expert_id: @expert_profile.id, status: "active")
+    conversation.update!(
+      assigned_expert: @expert_profile.user,
+      status: "active"
+    )
 
     # make Expert Assignment object to store this assignment
     ExpertAssignment.create!(
       conversation: conversation,
-      expert: @expert_profile,
+      expert_id: @expert_profile.id,
       status: "active",
       assigned_at: Time.current
     )
@@ -66,17 +67,17 @@ class ExpertsController < ApplicationController
     conversation = Conversation.find(params[:conversation_id])
 
     # check if conversation is assigned to the current expert
-    unless conversation.expert_id == @expert_profile.id
+    unless conversation.assigned_expert.id == @expert_profile.user_id
       render json: { error: "Current expert is not assigned to this conversation" },
         status: :forbidden
       return
     end
 
     # remove the expert's id from the conversation and change status
-    conversation.update!(expert_id: nil, status: "waiting")
+    conversation.update!(assigned_expert: nil, status: "waiting")
 
     # update the expert assignment to mark it resolved
-    assignment = ExpertAssignment.where(conversation: conversation, expert: @expert_profile).order(assigned_at: :desc).first
+    assignment = ExpertAssignment.where(conversation: conversation, expert_id: @expert_profile).order(assigned_at: :desc).first
 
     if assignment
       assignment.update!(status: "resolved", resolved_at: Time.current)
@@ -89,7 +90,6 @@ class ExpertsController < ApplicationController
   # GET /expert/profile: get the current expert's profile.
   def show
     render json: @expert_profile
-    #render json: format_profile(@expert_profile)
   end
 
   # PUT /expert/profile: update the expert's profile.
@@ -113,11 +113,13 @@ class ExpertsController < ApplicationController
 
   private
 
+  # authenticates expert with JWT token
   def authenticate_expert
 
     token = request.headers["Authorization"]&.split(" ")&.last
-    payload = JwtService.decode(token)
-    @current_user = User.find_by(id: payload["user_id"])
+
+    payload = JwtService.decode(token).with_indifferent_access
+    @current_user = User.find_by(id: payload[:user_id])
 
     if @current_user.nil?
       return render json: { error: "Current user = nil" }, status: :forbidden
@@ -131,39 +133,11 @@ class ExpertsController < ApplicationController
 
   end
 
-  def set_expert
-    @expert_profile = current_user.expert_profile
-  end
-
   def expert_profile_params
-    params.permit(:bio, knowledgeBaseLinks: [])
-  end
-
-  def format_conversation(conv)
-    {
-      id: conv.id.to_s,
-      title: conv.title,
-      status: conv.status,
-      questionerId: conv.user_id.to_s,
-      questionerUsername: conv.user.username,
-      assignedExpertId: conv.expert_id&.to_s,
-      assignedExpertUsername: conv.expert_profile&.user&.username,
-      createdAt: conv.created_at.iso8601,
-      updatedAt: conv.updated_at.iso8601,
-      lastMessageAt: conv.last_message_at&.iso8601,
-      unreadCount: conv.unread_messages_count_for_expert(@expert_profile)
-    }
-  end
-
-  def format_profile(profile)
-    {
-      id: profile.id.to_s,
-      userId: profile.user_id.to_s,
-      bio: profile.bio,
-      knowledgeBaseLinks: profile.knowledge_base_links,
-      createdAt: profile.created_at.iso8601,
-      updatedAt: profile.updated_at.iso8601
-    }
+    params.require(:expert_profile).permit(
+      :bio,
+      knowledge_base_links: []
+    )
   end
 
   def format_assignment(assignment)
