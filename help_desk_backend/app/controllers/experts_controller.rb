@@ -14,15 +14,36 @@ class ExpertsController < ApplicationController
     waiting = Conversation.where(assigned_expert: nil, status: "waiting")
 
     # get all assigned conversations
-    assigned = Conversation.where(assigned_expert: @expert_profile.user)
+    assigned = Conversation.where(assigned_expert: @expert_profile.user_id)
 
-    # make json based on return in API specification
     render json: {
       waitingConversations: waiting.map do |convo|
-        convo
+        {
+          id: convo.id.to_s,
+          title: convo.title,
+          status: convo.status,
+          questionerId: convo.initiator_id.to_s,
+          questionerUsername: convo.initiator.username,
+          assignedExpertId: convo.assigned_expert_id&.to_s,
+          assignedExpertUsername: convo.assigned_expert&.username,
+          createdAt: convo.created_at.iso8601,
+          updatedAt: convo.updated_at.iso8601,
+          lastMessageAt: convo.last_message_at&.iso8601
+        }
       end,
       assignedConversations: assigned.map do |convo|
-        convo
+        {
+          id: convo.id.to_s,
+          title: convo.title,
+          status: convo.status,
+          questionerId: convo.initiator_id.to_s,
+          questionerUsername: convo.initiator.username,
+          assignedExpertId: convo.assigned_expert_id&.to_s,
+          assignedExpertUsername: convo.assigned_expert&.username,
+          createdAt: convo.created_at.iso8601,
+          updatedAt: convo.updated_at.iso8601,
+          lastMessageAt: convo.last_message_at&.iso8601
+        }
       end
     }
   end
