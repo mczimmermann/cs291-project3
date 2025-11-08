@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  post '/auth/register', to: 'users#register'
+  #post '/auth/register', to: 'users#register'
 
   get 'expert/queue', to: 'experts#queue'
   post 'expert/conversations/:conversation_id/claim', to: 'experts#claim'
